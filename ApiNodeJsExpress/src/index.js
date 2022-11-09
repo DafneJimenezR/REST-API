@@ -2,6 +2,10 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 
+const path = require('path');
+
+
+
 // Configuraciones
 app.set("port", process.env.PORT || 3000);
 app.set("json spaces", 2);
@@ -11,7 +15,55 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Primer WS GET
+app.get('/',function(req,res){
+ // res.sendFile(path.join(__dirname+'/html/index.html'));
+// file:///C:/Users/Dafne/Documents/FORK_projects/REST-API/ApiNodeJsExpress/src/html/index.html
+res.sendFile(path.join(__dirname+'/html/index.html'));
+
+});
+
+var usuario = {
+  nombre: '',
+  apellido: '',
+  id: ''
+};
+
+
+app.get('/crearEntrada',function(req,res){
+  res.sendFile(path.join(__dirname+'/html/form.html'));
+
+});
+
+app.post('/envioDeDatos', function (req, res) {
+  usuario.nombre = req.body.nombre;
+  usuario.apellido = req.body.apellido;
+  usuario.id = req.body.id;
+  res.sendFile(path.join(__dirname + '/html/index.html'));
+});
+
+app.get('/consultarDatos', function (req, res) {
+  if (usuario.nombre !== '' && usuario.apellido !== '' && usuario.id !== ''){
+     res.json(usuario);
+  } else {
+     res.send("Datos no ingresado");
+  }
+});
+
+app.get('/eliminarDatos', function (req, res) {
+  if (usuario.nombre !== '' && usuario.apellido !== '' && usuario.id !== '') {
+     usuario.nombre = '';
+     usuario.apellido = '';
+     usuario.id = '';
+     res.sendFile(path.join(__dirname + '/html/delete.html'));
+  } else {
+     res.send("Datos no ingresado");
+  }
+});
+
+
+
+
+//Primer WS GET
 // app.get("/", (req, res) => {
 //   res.json({
 //     "Title": "Hola Mundoccccccc",
@@ -19,7 +71,7 @@ app.use(express.json());
 // });
 
 //Routes
-app.use(require('./routes/index'));
+app.use(require('./routes/index.js'));
 
 //Iniciando el servidor, escuchando...
 app.listen(app.get("port"), () => {
