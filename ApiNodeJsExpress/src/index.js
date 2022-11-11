@@ -22,9 +22,11 @@ res.sendFile(path.join(__dirname+'/html/index.html'));
 
 });
 
-var usuario = {
+let usuario = {
   nombre: '',
   apellido: '',
+  direccion: '',
+  telefono: '',
   id: ''
 };
 
@@ -37,12 +39,14 @@ app.get('/crearEntrada',function(req,res){
 app.post('/envioDeDatos', function (req, res) {
   usuario.nombre = req.body.nombre;
   usuario.apellido = req.body.apellido;
+  usuario.direccion = req.body.direccion;
+  usuario.telefono = req.body.telefono;
   usuario.id = req.body.id;
   res.sendFile(path.join(__dirname + '/html/index.html'));
 });
 
 app.get('/consultarDatos', function (req, res) {
-  if (usuario.nombre !== '' && usuario.apellido !== '' && usuario.id !== ''){
+  if (usuario.nombre !== '' && usuario.apellido !== '' && usuario.direccion !== '' && usuario.telefono !== ''  && usuario.id !== '' ){
      res.json(usuario);
   } else {
      res.send("Datos no ingresado");
@@ -50,9 +54,11 @@ app.get('/consultarDatos', function (req, res) {
 });
 
 app.get('/eliminarDatos', function (req, res) {
-  if (usuario.nombre !== '' && usuario.apellido !== '' && usuario.id !== '') {
+  if (usuario.nombre !== '' && usuario.apellido !== '' && usuario.direccion !== '' && usuario.telefono !== ''  && usuario.id !== '') {
      usuario.nombre = '';
      usuario.apellido = '';
+     usuario.direccion = '';
+     usuario.telefono = '';
      usuario.id = '';
      res.sendFile(path.join(__dirname + '/html/delete.html'));
   } else {
